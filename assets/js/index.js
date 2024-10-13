@@ -82,7 +82,7 @@ fetch('https://jsonplaceholder.typicode.com/todos/1', {
                     <div class="card text-bg-dark">
                         <img src="assets/images/Samurai2.jpg" alt="Samurai Image" class="card-img-top img-fluid">
                         <div class="card-body">
-                        <h2 class="card-title">Card del primer elemento de post editado con PUT</h2>
+                        <h2 class="card-title">Card del primer elemento de todos editado con PUT</h2>
                         <div class="text-start fs-4"> 
                             <p class="card-text"><strong>User Id: </strong>${json.userId}</p>
                             <p class="card-text"><strong>Id: </strong>${json.id}</p>
