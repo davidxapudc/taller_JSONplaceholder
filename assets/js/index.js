@@ -18,82 +18,179 @@ fetch('https://jsonplaceholder.typicode.com/todos')
                 <td>${todo.completed}</td>
             </tr>
             `;
-        });
+            });
 //creo una constante para obtener el id de la tabla y le asigno el valor de la variable output usando el innerHTML para que se muestren los datos en la tabla
 //Así finalmente todos los datos de la API se mostrarán en la tabla resolviendo el primer punto del trabajo
         const tableHTML = document.getElementById('table');
         tableHTML.innerHTML = output;
     });
 
-//Hago un fetch a la API de posts para obtener los datos de un post en específico con el que haré el ejercicio 2) y los muestro en consola para verificar de que lo carga
-fetch('https://jsonplaceholder.typicode.com/todos/1')
-    .then((response) => response.json())
-    .then(json => {
-        console.log(json)
-//Creo una variable para almacenar los datos de la API y los muestro en un card con un diseño basado en  bootstrap, aunque cona lgunas modificaciones
-//También quise agregar una imagen para que se viera mejor la card,aunque está la añadí creando una carpeta images y agregando la imagen en ella
-//Quise cambiarle el tamaño a la imagen agregando un css pero no me funcionó,así que elimine el css y modifique lo que pude la card para que no quedara gigante y poner la imagen centrada
-        let cardNoEdit = `
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-4">
-                            <div class="card text-bg-dark">
-                                <img src="assets/images/Samurai1.jpg" alt="Samurai Image" class="card-img-top img-fluid">
-                                <div class="card-body">
-                                <h2 class="card-title">Card del registro original</h2>
-                                <div class="text-start fs-4"> 
-                                    <p class="card-text"><strong>User Id: </strong>${json.userId}</p>
-                                    <p class="card-text"><strong>Id: </strong>${json.id}</p>
-                                    <p class="card-text"><strong>User Title: </strong>${json.title}</p>
-                                    <p class="card-text"><strong>Completed: </strong>${json.completed}</p>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>`;
-//Finalmente creo  una constante para obtener el id de la card y le asigno el valor de la variable cardNoEdit usando el innerHTML para que se muestren los datos en la card
-        const cardNoEditHTML = document.getElementById('card-no-edit');
-        cardNoEditHTML.innerHTML = cardNoEdit;
-        });
 
-//Hago un fetch a la API de posts para obtener los datos de un post en específico con el que haré el ejercicio PUT para realizar el ejercicio 2) 
-//modifique el userId a 2, el title a "Este es el nuevo titulo" y el completed a true basandome en la guia de la página de JSONPlaceholder
-fetch('https://jsonplaceholder.typicode.com/todos/1', {
-    method: 'PUT',
-    body: JSON.stringify({
-        userId: 2,
-        id: 1,
-        title: 'Este es el nuevo título,modificado usando  PUT',
-        completed: true,
-    }),
-    headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-    },
+//Creo un evento para el formulario de POST el cual recibe los datos del formulario al hacer sumit
+document.getElementById('data-form-post').addEventListener('submit', function(event) {
+//Uso preventDefalt para evitar que el formulario se envíe y recargue la página
+    event.preventDefault(); 
+
+// Toma los valores de los inputs del formulario y los asigna a una constante
+    const userIdPost = document.getElementById('user-id-post').value;
+    const titlePost = document.getElementById('title-post').value;
+//Obtengo el radio botón seleccionado con el nombre "completed-post" para saber si recibio un valor true o false
+    const completedRadio = document.querySelector('input[name="completed-post"]:checked');
+
+//Comprueno  si un radio botón con el nombre "completed" está seleccionado y, si es así, asigna el valor true a la variable completedPost. Si no está seleccionado, asigna false. 
+    const completedPost = completedRadio ? completedRadio.value === 'true' : false;
+
+    // Realizar la solicitud POST usando el método fetch que está en la página de JSONplaceholder
+    fetch('https://jsonplaceholder.typicode.com/todos', {
+        method: 'POST',
+        body: JSON.stringify({
+            userId: userIdPost,
+            title: titlePost,
+            completed: completedPost,
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
     })
     .then((response) => response.json())
-    .then(json => {
-        console.log(json)
-//Basicamente copie y pegue el codigo anterior de la card y la varianle, pero cambie el nombre de la variable y de la constante para que no se sobreescribiera y puse una imagen diferente
-        let cardEdited = `
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="card text-bg-dark">
-                        <img src="assets/images/Samurai2.jpg" alt="Samurai Image" class="card-img-top img-fluid">
-                        <div class="card-body">
-                        <h2 class="card-title">Card del primer elemento de post editado con PUT</h2>
-                        <div class="text-start fs-4"> 
+    .then((json) => {
+        console.log(json);
+
+        // Crear la nueva tarjeta con los datos del POST y le asigno una imagen de un samurai porque el registro que elegí no tiene imagenes y quería que se viera mejor
+        let newCardPost = `
+            <div class="card text-bg-dark h-100">
+                <img src="assets/images/Samurai3.jpg" alt="Samurai Image" class="card-img-top">
+                <div class="card-body">
+                    <h2 class="card-title">Card creada usando el método POST</h2>
+                    <div class="text-start fs-4">
+                        <p class="card-text"><strong>User Id: </strong>${json.userId}</p>
+                        <p class="card-text"><strong>Id: </strong>${json.id}</p>
+                        <p class="card-text"><strong>User Title: </strong>${json.title}</p>
+                        <p class="card-text"><strong>Completed: </strong>${json.completed ? 'True' : 'False'}</p>
+                    </div>
+                </div>
+            </div>`;
+
+        // Insertar la nueva tarjeta en el HTML
+        const cardPostHTML = document.getElementById('new-card-post');
+        cardPostHTML.innerHTML = newCardPost;
+
+        // Limpiar el formulario después del envío
+        document.getElementById('data-form-post').reset();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+
+
+
+//Realizo los mismos pasos que en el POST pero con el método PUT
+        document.getElementById('data-form-put').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+        
+// Obtener los valores del formulario
+            const userId = document.getElementById('user-id-put').value;
+            const id = document.getElementById('id-put').value;
+            const title = document.getElementById('title-put').value;
+        
+            const completedRadio = document.querySelector('input[name="completed"]:checked');
+            const completed = completedRadio ? completedRadio.value === 'true' : false; 
+
+            fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    userId: userId, 
+                    id: id,
+                    title: title,
+                    completed: completed 
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json); 
+        
+                let cardEdited = `
+                <div class="card text-bg-dark h-100">
+                    <img src="assets/images/Samurai1.jpg" alt="Samurai Image" class="card-img-top">
+                    <div class="card-body">
+                        <h2 class="card-title">Card del elemento con ID: ${json.id} editado usando el método PUT</h2>
+                        <div class="text-start fs-4">
                             <p class="card-text"><strong>User Id: </strong>${json.userId}</p>
                             <p class="card-text"><strong>Id: </strong>${json.id}</p>
                             <p class="card-text"><strong>User Title: </strong>${json.title}</p>
-                            <p class="card-text"><strong>Completed: </strong>${json.completed}</p>
+                            <p class="card-text"><strong>Completed: </strong>${json.completed ? 'True' : 'False'}</p>
                         </div>
                     </div>
-                </div>
-                </div>
-            </div>
-        </div>`;
-        const careditedHTML = document.getElementById('card-edited');
-        careditedHTML.innerHTML = cardEdited;
-    });
+                </div>`;
+
+                const cardEditedHTML = document.getElementById('card-edited');
+                cardEditedHTML.innerHTML = cardEdited;
+
+                document.getElementById('data-form-put').reset();
+            })
+        });
+
+
+//Realizo  pasos similares a los métodos anteriores pero con el método DELETE y usando alertas de SweetAlert2
+        document.getElementById('delete').addEventListener('click', function(event) {
+            event.preventDefault();
+            
+
+            const idDelete = document.getElementById('id-delete').value;
+
+            // Creo una alerta de SweetAlert2 para confirmar si el usuario desea eliminar el registro asignandole colores,estilos y textos que contrasten con la página, eso si apoyandome de la IA y la pagina de SweetAlert2 
+            //ya que no conozco los colores por codigo y querái que los textos fueran congruentes 
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminarlo!',
+                cancelButtonText: 'Cancelar',
+                background: '#343a40', 
+                color: '#ffffff', 
+                iconColor: '#ffc107' 
+            }).then((result) => {
+                // Si el usuario confirma que desea eliminar el registro después de la alerta, se ejecuta el codigo con el método DELETE
+                if (result.isConfirmed)
+                    {
+                    // Realizar la solicitud DELETE usando el método fetch buscando el registro que se desea eliminar por su ID
+                    fetch(`https://jsonplaceholder.typicode.com/todos/${idDelete}`, {
+                        method: 'DELETE',
+                    })
+                    .then((response) => {
+                        //Después de encontrar el registro y eliminarlo, se muestra una alerta de SweetAlert2 para confirmar que el registro ha sido eliminado
+                            Swal.fire({
+                            title: '¡Eliminado!',
+                            text: `Registro con ID ${idDelete} ha sido eliminado.`,
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            background: '#343a40', 
+                            color: '#ffffff', 
+                            iconColor: '#ffc107',
+                            confirmButtonColor: '#d33' 
+                        });
+        
+                        document.getElementById('id-delete').value = '';
+                    })
+                }
+                else 
+                //Si el usuario cancela la eliminación del registro, o si sucede algun error se muestra una alerta de SweetAlert2 para confirmar que el registro no ha sido eliminado
+                Swal.fire({
+                    title: 'El registro no ha sido eliminado',
+                    text: `Registro con ID ${idDelete} no ha sido eliminado.Puede intentar de nuevo.`,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    background: '#343a40', 
+                    color: '#ffffff', 
+                    iconColor: '#ffc107',
+                    confirmButtonColor: '#d33' 
+                });
+            });
+        });

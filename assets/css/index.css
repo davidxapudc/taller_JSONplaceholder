@@ -1,0 +1,13 @@
+
+/* Estilo que le di a la imagen de las cards ya que el tamaño era demasiado grande si lo dejaba como lo tenía con bootstrap */
+.card-img-top {
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+}
+
+/* Estilo que le di a la tabla para que sea responsive y tenga un scroll si la tabla es muy grande */
+.table-responsive {
+    max-height: 400px; 
+    overflow-y: auto;
+}

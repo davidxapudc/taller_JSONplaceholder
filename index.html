@@ -4,44 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSONplaceholder</title>
-    <!-- Utilizo el enlace para usar bootstrap en mi pagina, ya que en las otras ocasiones lo trabaje usando el método de las carpetas -->
+    <!-- Enlace a Bootstrap al archivo CSS que uso para dar estilos y también link para poder usar sweetalert2-->
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-    <body class="bg-dark text-white"> 
-        <!-- creo la seccion donde ira la tabla y un titulo,de manera similar a la que se hizo en el parcial poniendole algunas clases de bootstrap para que se vea mejor -->
-        <section class="text-center">
-            <!-- pongo un titulo indicando que el registro usado del Jsonplaceholder es el que se llama: todos -->
-            <h2><strong>JSONplaceholder</strong></h2> 
-                <p class="text-center-white fs-3">El registro usado  para realizar está actvidad es el que se llama: todos</p>
-            <div class=" table-responsive">
-                <!-- creo la tabla con su estructura y los nombres de los elementos que tendra la tabla -->
-                <table class="table table-bordered table-striped table-dark"> 
-                    <thead>
+<!-- Le doy estilo  al body para que sea de color negro con texto blanco    -->
+<body class="bg-dark text-white"> 
+
+<!-- Creo una seccion para centrar el texto poner un titulo a la página y pongo un parrafo para mostrar el archivo que usaré para realizar la actividad -->
+    <section class="text-center">
+        <h2><strong>JSONplaceholder</strong></h2> 
+        <p class="text-white fs-3">El registro usado para realizar esta actividad es el que se llama: todos</p>
+<!-- Para crear el scroll a la tabla solamente creo un contenedor que haga que la tabla sea responsiva y le añado estilos en CSS -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-dark">
+                <thead>
+                    <tr>
                         <th>User Id</th>
                         <th>ID</th>
                         <th>Title</th>
                         <th>Completed</th>
-                    </thead>
-                    <!-- finalmente creo un tbody con un id para poder manipularlo con javascript y enviarle los datos de la tabla  -->   
-                    <tbody id="table"></tbody>        
-                </table>
+                    </tr>
+                </thead>
+                <tbody id="table">
+                    
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+<!-- Creo el contendor que tendrá el formulario para añadir un nuevo registro con sus respectivos valores -->
+    <section class="container mt-5">
+        <h2 class="text-center">Escribir datos en el formulario para crear un nuevo registro</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <form id="data-form-post">
+                    <div class="mb-3">
+                        <label for="user-id-post" class="form-label">User ID:</label>
+                        <input type="number" class="form-control" id="user-id-post" placeholder="Escriba el  UserID" required>     
+                    </div>
+                    <div class="mb-3">
+                        <label for="title-put-post" class="form-label">Title:</label>
+                        <input type="text" class="form-control" id="title-post" placeholder="Escriba el nuevo Título" required>     
+                    </div>
+<!-- Esta es la parte ma´s complicada del formulario ya que el valor del registro es un booleano por lo que uso input de type radio para elegir entre tru o false -->
+                    <div class="mb-3">
+                        <label class="form-label">Completed:</label>
+                        <div>
+                            <input type="radio" id="completed-true-post" name="completed" value="true" required>
+                            <label for="completed-true-post">True</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="completed-false-post" name="completed" value="false">
+                            <label for="completed-false-post">False</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Crear nuevo registro</button>
+                </form>
+                
             </div>
-        </section>
+            <div id="new-card-post" class="col-md-4"></div>
+        </div>
+    </section>  
+<!-- Copio el mismo formulario anterior, pero le cambio algunos valores para que funcione con otro método -->
+    <section class="container mt-5">
+        <h2 class="text-center">Escribir datos en el formulario y luego dar click en editar para editar un registro</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <form id="data-form-put">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="id-put" class="form-label">ID:</label>
+                            <input type="number" class="form-control" id="id-put" placeholder="Escriba el ID del registro a editar" required>     
+                        </div>
+                        <label for="user-id-put" class="form-label">User ID:</label>
+                        <input type="number" class="form-control" id="user-id-put" placeholder="Escriba el nuevo UserID" required>     
+                    </div>
+                    <div class="mb-3">
+                        <label for="title-put" class="form-label">Title:</label>
+                        <input type="text" class="form-control" id="title-put" placeholder="Escriba el nuevo Title" required>     
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Completed:</label>
+                        <div>
+                            <input type="radio" id="completed-true-put" name="completed" value="true" required>
+                            <label for="completed-true-put">True</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="completed-false-put" name="completed" value="false">
+                            <label for="completed-false-put">False</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Editar</button>
+                </form>
+                
+            </div>
+            <div id="card-edited" class="col-md-4"></div>
+        </div>
+    </section>        
 
-        <section class="text-center">
-            <h2><strong>Card sin editar</strong></h2>
-                <div id="card-no-edit" class="align-items-center">
+<section class="container mt-5">
+    <h2 class="text-center">Escribir el ID del registro a eliminar</h2>
+    <label for="id-delete" class="form-label">ID:</label>
+    <input type="number" class="form-control" id="id-delete" placeholder="Escriba el ID del registro a eliminar" required>
+    <button id="delete" class="btn btn-danger mt-3">Eliminar</button>
+</section >
 
-                </div>
-        </section>
-
-        <section class="text-center">
-            <h2><strong>Card  editada</strong></h2>
-                <div id="card-edited">
-
-                </div>
-        </section>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <script src="assets/js/index.js"></script>
-    </body>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="assets/js/index.js"></script>
+</body>
 </html>
