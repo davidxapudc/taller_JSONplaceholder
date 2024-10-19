@@ -183,7 +183,7 @@ document.getElementById('data-form-post').addEventListener('submit', function(ev
                 else 
                 //Si el usuario cancela la eliminación del registro, o si sucede algun error se muestra una alerta de SweetAlert2 para confirmar que el registro no ha sido eliminado
                 Swal.fire({
-                    title: 'El registro no ha sido eliminado',
+                    title: 'El registro',
                     text: `Registro con ID ${idDelete} no ha sido eliminado.Puede intentar de nuevo.`,
                     icon: 'success',
                     confirmButtonText: 'Aceptar',
